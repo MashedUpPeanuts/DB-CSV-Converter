@@ -1,4 +1,4 @@
-#V1.00.00
+#V1.01.00
 
 #Importing libraries
 import os
@@ -53,15 +53,15 @@ def ConvertDB(dbFile, savePath):
             subConvertDB(path_f, dbFile, tableName)
         count += 1
 
-#Opens a dialogue to select a .DB file from Windows explorer
+#Opens a dialogue to select an SQLite3 Database file from Windows explorer
 def openFile():
     global filePath  # Setting filePath as global variable for use elsewhere
-    filePath = filedialog.askopenfilename(title="Open an SQLite3 Database file (*.DB Format)",
-                                          filetypes=(("SQLite3 Database File", "*.db"), ("all files", "*.*")))
+    filePath = filedialog.askopenfilename(title="Open an SQLite3 Database file",
+                                          filetypes=(("SQLite3 Database File", tuple(extensionsAllowable)), ("all files", "*.*")))
     my_text.configure(state="normal")
     my_text.delete(1.0, END)  # Clearing existing input
 
-    if filePath.endswith(".DB") or filePath.endswith(".db"):
+    if filePath.endswith(tuple(extensionsAllowable)):
         my_text.insert(END, filePath)   #Adding new input to text box
 
         con = sqlite3.connect(filePath)
@@ -109,9 +109,9 @@ def saveLocation():
 def ConversionWindow():
     errorOutput.configure(text="")
 
-    if outputPath and (filePath.endswith(".DB") or filePath.endswith(".db")):
+    if outputPath and (filePath.endswith(tuple(extensionsAllowable))):
         ConvertDB(filePath, outputPath)
-        errorOutput.configure(text="The database has been successfully converted into CSV files!",
+        errorOutput.configure(text="The selected SQLite3 database table(s) have been successfully converted into CSV file(s)!",
                                 fg='Dark Green')
         cancelButton.configure(text="Exit")
     else:
@@ -128,6 +128,7 @@ def readStates():
     tickStates = []
     tickStates = [var.get() for var in checkbox_vars]
 
+extensionsAllowable = [".DB", ".db", ".db3", ".sqlite", ".sqlite3"] #List of common SQLite3 file extensions
 
 #Setting global variables to false in case of immediate exit of file selection
 filePath = FALSE
@@ -150,13 +151,13 @@ checkCornerV = windowCornerV
 #Basic window geometry
 mainWindow.geometry('%dx%d+%d+%d' % (windowWidth, windowHeight, windowCornerH, windowCornerV))
 mainWindow.resizable(False, False)
-mainWindow.title("SQLite3 Database (*.DB) Conversion Tool")
+mainWindow.title("SQLite3 Database Conversion Tool")
 
 #Labels and buttons for the input file selection
-winLabelIn = Label(mainWindow, text="Press the button below to select an SQLite3 database file (*.DB)")
+winLabelIn = Label(mainWindow, text="Press the button below to select an SQLite3 database file")
 my_text = Text(mainWindow, width=135, height=1)
 my_text.configure(state="disabled")
-buttonIn = Button(text="Open File (.DB)",command=openFile)
+buttonIn = Button(text="Open Database",command=openFile)
 
 #Labels and buttons for the output directory selection
 winLabelOut = Label(mainWindow, text="Press the button below to select a directory to save the *.csv outputs to")
