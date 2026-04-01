@@ -1,4 +1,4 @@
-#V1.01.00
+#V1.02.00
 
 #Importing libraries
 import os
@@ -7,6 +7,7 @@ import csv
 
 from tkinter import *
 from tkinter import filedialog
+from tkinter.font import Font
 
 def subConvertDB(fullpath, dbFPath, tableName):
     con = sqlite3.connect(dbFPath)
@@ -49,7 +50,7 @@ def ConvertDB(dbFile, savePath):
         tableName = table_names[count]
         path_f = os.path.join(savePath, tableName + ".csv")
 
-        if tickStates[count] == 1:
+        if tickStates[count] == True:
             subConvertDB(path_f, dbFile, tableName)
         count += 1
 
@@ -74,21 +75,26 @@ def openFile():
 
         global checkbox_vars
         checkbox_vars = []
-        rowPos = 1
+        rowPos = 2
 
         for widget in fTable.winfo_children():
-            widget.destroy()
+            if isinstance(widget, Checkbutton):
+                widget.destroy()
 
         for table in tables:
-            var = IntVar()
+            var = BooleanVar()
             checkbox_vars.append(var)
             Checkbutton(fTable, text=table, variable = var).grid(row=rowPos, column=1, sticky="W")
             rowPos += 1
         updateScrollRegion()
+        selectButton.configure(state="normal")
     else:       #Clears checklist if an existing database is replaced with an invalid file or no file
        checkbox_vars=[]
        for widget in fTable.winfo_children():
-           widget.destroy()
+           if isinstance(widget, Checkbutton):
+               widget.destroy()
+       selectButton.configure(text="Select All", state="disabled")
+
 
     my_text.configure(state="disabled")
 
@@ -127,6 +133,16 @@ def readStates():
     global tickStates
     tickStates = []
     tickStates = [var.get() for var in checkbox_vars]
+
+def selectAll():
+    if checkbox_vars:
+        [var.set(True) for var in checkbox_vars]
+        selectButton.configure(text="Unselect All", command=unselectAll)
+
+def unselectAll():
+    if checkbox_vars:
+        [var.set(False) for var in checkbox_vars]
+        selectButton.configure(text="Select All", command = selectAll)
 
 extensionsAllowable = [".DB", ".db", ".db3", ".sqlite", ".sqlite3"] #List of common SQLite3 file extensions
 
@@ -195,9 +211,16 @@ tickWindow.geometry('%dx%d+%d+%d' % (checkWidth, checkHeight, checkCornerH, chec
 tickWindow.resizable(False, False)
 tickWindow.protocol("WM_DELETE_WINDOW", cancelProcess) #Closes main window when child window is closed
 
+
 cTableContainer = Canvas(tickWindow)
 fTable = Frame(cTableContainer)
 sbVerticalScrollBar = Scrollbar(tickWindow)
+
+selectButton = Button(fTable, text="Select All", command=selectAll)
+selectButton.configure(width=2, height=1)
+selectButton.grid(row=1, column=1, ipadx=120, padx=10)
+selectButton.configure(state="disabled")
+
 
 def updateScrollRegion():
     cTableContainer.update_idletasks()
@@ -210,6 +233,8 @@ def createScrollableContainer():
     sbVerticalScrollBar.pack(fill=Y, side=RIGHT, expand=FALSE)
     cTableContainer.pack(fill=BOTH, side=LEFT, expand=TRUE)
     cTableContainer.create_window(0, 0, window=fTable, anchor=NW)
+
+
 
 createScrollableContainer()
 
