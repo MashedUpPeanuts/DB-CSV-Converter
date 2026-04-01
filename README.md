@@ -2,8 +2,8 @@
 This project provides a GUI based application to select tables from an SQLite3 Database and export them .CSV files.
 
 <p float="left">
-  <img src="/Assets/MainMenu.png" width="79.1%" />
-  <img src="/Assets/ChecklistMenu.png" width="19.8%" />
+  <img src="/Assets/MainMenu.png?" width="79.1%" />
+  <img src="/Assets/ChecklistMenu.png?" width="19.8%" />
 </p>
 
 This project's original purpose was to provide a tool for converting Bentley AutoPIPE Results Database files into .csv files for easier processing for Engineering analysis. However, the tool has now been generalized to allow it to work for conversion of any SQLite3 database tables.
