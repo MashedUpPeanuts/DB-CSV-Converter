@@ -1,4 +1,4 @@
-# SQLite-CSV-Converter
+# SQLite to CSV Conversion Tool
 This project provides a GUI based application to select tables from an SQLite3 Database and export them .CSV files.
 
 <p float="left">
