@@ -1,5 +1,5 @@
 ###################
-# VERSION 1.02.01 #
+# VERSION 1.03.00 #
 ###################
 
 ###################
@@ -85,13 +85,22 @@ def openFile():
     mainTextInput.configure(state="normal")
     mainTextInput.delete(1.0, END)
 
-    #IF EXTENSION VALID QUERY TABLE AND CREATE CHECKLIST OF DATABASE TABLES. IF INVALID CLEAR CHECKLIST.
-    if filePath.endswith(tuple(extensionsAllowable)):
+    con = sqlite3.connect(filePath)
+    cur = con.cursor()
 
+    #CHECKS VALIDITY OF SELECTED DATABASE
+    validDatabase = True
+    try:
+        cur.execute("PRAGMA schema_version")
+    except sqlite3.DatabaseError as e:
+        validDatabase = False
+        mainLabelError.configure(text="Selected file is not a valid SQLite3 database.", fg='red')
+
+    #IF VALID SQLITE3 DATABASE QUERY TABLE AND CREATE CHECKLIST OF DATABASE TABLES. IF INVALID CLEAR CHECKLIST.
+    if validDatabase:
+
+        mainLabelError.configure(text="")
         mainTextInput.insert(END, filePath)
-
-        con = sqlite3.connect(filePath)
-        cur = con.cursor()
 
         #QUERYING DATABASE
         cur.execute("SELECT name FROM sqlite_master WHERE type='table'")
@@ -144,7 +153,7 @@ def saveLocation():
 def conversionWindow():
     mainLabelError.configure(text="")
 
-    if outputPath and (filePath.endswith(tuple(extensionsAllowable))):
+    if outputPath and filePath:
         ConvertDB(filePath, outputPath)
         mainLabelError.configure(text="The selected SQLite3 database table(s) have been successfully converted into CSV file(s)!",
                                 fg='Dark Green')
@@ -212,6 +221,7 @@ checkCornerX = mainCornerX + mainWidth
 checkCornerY = mainCornerY
 
 
+
 #############
 # MAIN MENU #
 #############
@@ -221,6 +231,8 @@ mainWindow = Tk()
 mainWindow.geometry('%dx%d+%d+%d' % (mainWidth, mainHeight, mainCornerX, mainCornerY))
 mainWindow.resizable(False, False)
 mainWindow.title("SQLite3 Database Conversion Tool")
+icon = PhotoImage(file="Icon.png")
+mainWindow.iconphoto(False, icon)
 
 #DATABASE SELECTION WIDGETS
 mainLabelInput = Label(mainWindow, text="Press the button below to select an SQLite3 database file")
@@ -262,7 +274,8 @@ checkWindow = Toplevel(mainWindow)
 checkWindow.title("Select tables to export")
 checkWindow.geometry('%dx%d+%d+%d' % (checkWidth, checkHeight, checkCornerX, checkCornerY))
 checkWindow.resizable(False, False)
-checkWindow.protocol("WM_DELETE_WINDOW", cancelProcess) #Closes main window when child window is closed
+checkWindow.iconphoto(False, icon)
+checkWindow.protocol("WM_DELETE_WINDOW", cancelProcess)
 
 #WINDOW AND SCROLLBAR CONFIGURATION
 checkContainer = Canvas(checkWindow)
