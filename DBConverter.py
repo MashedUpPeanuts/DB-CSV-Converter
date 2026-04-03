@@ -1,5 +1,5 @@
 ###################
-# VERSION 1.03.00 #
+# VERSION 1.03.01 #
 ###################
 
 ###################
@@ -11,6 +11,7 @@ import sqlite3
 import csv
 from tkinter import *
 from tkinter import filedialog
+from tkinter import font
 
 ########################
 # VARIABLE DEFINITIONS #
@@ -288,6 +289,9 @@ checkButtonSelect.configure(width=2, height=1)
 checkButtonSelect.grid(row=1, column=1, ipadx=120, padx=10)
 checkButtonSelect.configure(state="disabled")
 
+#CONFIGURING FONT
+defaultFont = font.nametofont("TkDefaultFont")
+defaultFont.configure(family="Tahoma", size=9)
 
 ##############
 # MAIN LOOPS #
