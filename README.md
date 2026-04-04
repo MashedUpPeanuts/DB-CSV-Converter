@@ -12,6 +12,6 @@ This project's original purpose was to provide a tool for converting Bentley Aut
 This project was coded in Python, using standard libraries.
 
 # Installation and Use
-The latest release contains a pre-compiled executable, which can be downloaded and used immediately.
+The [latest release](https://github.com/MashedUpPeanuts/SQLite-to-CSV/releases) contains a pre-compiled executable, which can be downloaded and used immediately.
 
 Alternatively, the .py file, containing the code can be downloaded and compiled by the end user.
