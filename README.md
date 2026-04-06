@@ -14,4 +14,6 @@ This project was coded in Python, using standard libraries.
 # Installation and Use
 The [latest release](https://github.com/MashedUpPeanuts/SQLite-to-CSV/releases) contains a pre-compiled executable, which can be downloaded and used immediately.
 
-Alternatively, the .py file, containing the code can be downloaded and compiled by the end user.
+Alternatively, the source code package can be downloaded from the latest release and compiled using:
+
+`py -m PyInstaller -F --icon='Icon.png' --add-data "Icon.png;.\assets" --onefile --noconsole 'DBConverter.py'`
