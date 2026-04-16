@@ -1,6 +1,9 @@
 ###################
-# VERSION 1.03.03 #
+# VERSION 1.03.04 #
 ###################
+Version = "1.03.04"
+upDate = "16 Apr 2026"
+versionString = "Version " + Version + " -  Last Updated " + upDate
 
 ###################
 # LIBRARY IMPORTS #
@@ -16,7 +19,6 @@ from tkinter import filedialog
 from tkinter import font
 
 
-
 ########################
 # VARIABLE DEFINITIONS #
 ########################
@@ -26,11 +28,10 @@ filePath = FALSE
 outputPath = FALSE
 checkboxVars = []
 
+
 ########################
 # FUNCTION DEFINITIONS #
 ########################
-
-
 
 def resource_path(relative_path):
     base_path = getattr(sys, '_MEIPASS', path.dirname(path.abspath(__file__)))
@@ -232,7 +233,6 @@ checkCornerX = mainCornerX + mainWidth
 checkCornerY = mainCornerY
 
 
-
 #############
 # MAIN MENU #
 #############
@@ -262,6 +262,9 @@ mainButtonConfirm = Button(text="Confirm Selections", command=conversionWindow)
 mainButtonCancel = Button(text="Cancel", command=cancelProcess, width=10)
 mainLabelError=Label(mainWindow, text='', fg='black')
 
+#VERSION LABEL
+mainLabelVersion = Label(mainWindow, text=versionString, fg='gray')
+
 #PACKING MAIN MENU
 mainLabelInput.pack(pady=(5, 0))
 mainTextInput.pack(pady=(5, 0))
@@ -275,6 +278,7 @@ mainButtonConfirm.pack(pady=(15, 0))
 mainButtonCancel.pack(pady=(5, 0))
 mainLabelError.pack(pady=(10,0))
 
+mainLabelVersion.pack(anchor='sw', padx = 5)
 
 ########################
 # TABLE SELECTION MENU #
@@ -302,6 +306,7 @@ checkButtonSelect.configure(state="disabled")
 #CONFIGURING FONT
 defaultFont = font.nametofont("TkDefaultFont")
 defaultFont.configure(family="Tahoma", size=9)
+
 
 ##############
 # MAIN LOOPS #
